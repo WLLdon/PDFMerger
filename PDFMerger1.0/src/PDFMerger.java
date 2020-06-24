@@ -7,16 +7,14 @@ import java.util.Objects;
 
 public class PDFMerger {
 
-     private static String SOURCE;
-     private static String PATHOUT;
-     private static final PDFMergerUtility ut = new PDFMergerUtility();
+    private static String SOURCE;
+    private static String PATHOUT;
+    private static final PDFMergerUtility ut = new PDFMergerUtility();
 
     public static void main(String[] args) {
 
-        
-
-        if(args.length == 0) stop("You didn't specify source directiory");
-        if(args.length == 1) stop("You didn't specify target file name");
+        if (args.length == 0) stop("You didn't specify source directiory");
+        if (args.length == 1) stop("You didn't specify target file name");
 
         SOURCE = args[0];
         PATHOUT = args[1];
@@ -27,7 +25,7 @@ public class PDFMerger {
 
     }
 
-    private static File[] FindOrder(){
+    private static File[] FindOrder() {
         String fileExt, filename;
         File dir = new File(SOURCE);
         File[] result = new File[Objects.requireNonNull(dir.listFiles()).length];
@@ -48,10 +46,10 @@ public class PDFMerger {
         return result;
     }
 
-    private static void AddResources(File[] files){
+    private static void AddResources(File[] files) {
 
         for (int i = 1; i < files.length; i++) {
-            System.out.println("adding source: "+files[i].toString());
+            System.out.println("adding source: " + files[i].toString());
             try {
                 ut.addSource(files[i]);
             } catch (FileNotFoundException e) {
@@ -60,7 +58,7 @@ public class PDFMerger {
         }
     }
 
-    private static void MergeFiles(){
+    private static void MergeFiles() {
 
         ut.setDestinationFileName(PATHOUT);
         try {
@@ -72,7 +70,7 @@ public class PDFMerger {
 
     }
 
-    private static void stop(String s){
+    private static void stop(String s) {
         System.out.println(s);
         System.exit(1);
     }
