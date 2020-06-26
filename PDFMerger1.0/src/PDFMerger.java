@@ -19,8 +19,9 @@ public class PDFMerger {
         SOURCE = args[0];
         PATHOUT = args[1];
 
-        File[] inOrder = FindOrder();
-        AddResources(inOrder);
+        //File[] inOrder = FindOrder();
+        //AddResources(inOrder);
+        AddWithoutOrder();
         MergeFiles();
 
     }
@@ -31,19 +32,36 @@ public class PDFMerger {
         File[] result = new File[Objects.requireNonNull(dir.listFiles()).length];
 
         for (File file : Objects.requireNonNull(dir.listFiles())) {
-            fileExt = file.toString().substring(file.toString().length() - 7);
-            filename = file.toString();
+            fileExt = file.toString().substring(file.toString().length() - 4);
+            //filename = file.toString();
             System.out.println(fileExt);
 
             //TODO auto-finding math series in files
 
             for (int i = 1; i < result.length; i++) {
-                if (filename.contains("W" + i + ".pdf")) result[i] = file;
+                if (fileExt.equals(".pdf")) result[i] = file;
             }
 
         }
 
         return result;
+    }
+
+
+    private static void AddWithoutOrder() {
+        File dir = new File(SOURCE);
+        String fileExt;
+
+        for (File file : Objects.requireNonNull(dir.listFiles())) {
+            fileExt = file.toString().substring(file.toString().length() - 4);
+
+            try {
+                if (fileExt.equals(".pdf")) ut.addSource(file);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private static void AddResources(File[] files) {
@@ -56,6 +74,8 @@ public class PDFMerger {
                 e.printStackTrace();
             }
         }
+
+
     }
 
     private static void MergeFiles() {
